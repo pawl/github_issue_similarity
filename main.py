@@ -118,7 +118,7 @@ def remove_single_occurences(texts):
 @cli.command()
 @click.argument('repo_name')
 def parse_issues(repo_name):
-    logger.info('Querying for repo: %s', repo_name)
+    logger.info('Querying for repo and issues: %s', repo_name)
     repo = Repo.query.filter_by(full_name=repo_name).first()
     if not repo:
         logger.error('Unable to find repo. Try using the get_issues command.')
@@ -154,8 +154,8 @@ def parse_issues(repo_name):
         sims = index[vec_lsi]
         sims = sorted(enumerate(sims), key=lambda item: -item[1])
 
-        # print out nicely the first 10 films
-        for i, (document_num, sim) in enumerate(sims): # print sorted (document number, similarity score) 2-tuples
+        # print out similarity of the 10 most similar issues
+        for i, (document_num, sim) in enumerate(sims):
             if sim > 0.98:
                 print issues[document_num].url, str(sim)
 
