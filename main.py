@@ -125,6 +125,7 @@ def parse_issues(repo_name):
         return
     logger.info('Found repo.')
 
+    # Based on: https://nbviewer.jupyter.org/gist/francoiseprovencher/83c595531177ac88e3c0
     logger.info('Tokenizing text, removing junk, and single occurences...')
     issues = [issue for issue in repo.issues]
     texts = [lemmatize(issue.body) for issue in repo.issues]
