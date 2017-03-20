@@ -21,7 +21,7 @@ logger.setLevel(logging.INFO)
 
 github = Github(settings.github_token)
 
-engine = create_engine(settings.db_uri, convert_unicode=True)
+engine = create_engine('sqlite:///issues.db', convert_unicode=True)
 session = scoped_session(sessionmaker(autocommit=False,
                                       autoflush=False,
                                       bind=engine))
@@ -42,7 +42,7 @@ class Issue(Base):
     __tablename__ = 'issues'
     id = Column(Integer, primary_key=True)
     title = Column(String(255))
-    body = Column(TEXT(collation='utf8mb4_unicode_ci'), nullable=True)
+    body = Column(TEXT, nullable=True)
     html_url = Column(String(255))
     state = Column(String(255))
     repo_id = Column(Integer, ForeignKey('repos.id'))
@@ -75,7 +75,7 @@ def get_issues(repo_name):
     ))
 
     logger.info('Getting issues...')
-    for issue in repo.get_issues():
+    for issue in repo.get_issues():  # TODO: get closed issues too
         logger.info(issue)
         session.merge(Issue(
             id=issue.id,
@@ -157,7 +157,7 @@ def parse_issues(repo_name):
         # print out similarity of the 10 most similar issues
         for i, (document_num, sim) in enumerate(sims):
             if sim > 0.98:
-                print issues[document_num].url, str(sim)
+                print issues[document_num].html_url, str(sim)
 
 
 if __name__ == '__main__':
