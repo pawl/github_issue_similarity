@@ -6,7 +6,7 @@
 Note: You may need to update setuptools to prevent errors while installing gensim.
 
 # Usage
-1. Fill in your github token and MySQL database uri in settings.py.
+1. Copy example_settings.py to settings.py and fill in your github token and MySQL database uri (example: `mysql://root@localhost/test?charset=utf8mb4`).
 1. `python main.py get_issues '<full name of your repo>'`
 1. `python main.py parse_issues '<full name of your repo>'`
 
